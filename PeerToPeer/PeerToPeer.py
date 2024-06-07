@@ -65,6 +65,12 @@ while 1:
             # Add loading dots here...threading?
             node.connect((foreignhost, PORT))
             # Raise error
+            
+            node.sendall(b'Hello, server')
+            # Receive data from the server
+            data = node.recv(1024)
+
+            print('Received:', data.decode())
         case "LISTEN":
             print("Listening...")
             node.listen()
