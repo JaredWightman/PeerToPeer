@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PeerToPeer", "PeerToPeer\PeerToPeer.pyproj", "{FE4A19C4-B1A8-4BDA-A530-E2251B4CE5D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE4A19C4-B1A8-4BDA-A530-E2251B4CE5D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4A19C4-B1A8-4BDA-A530-E2251B4CE5D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF175114-92B1-419B-BF2D-3961AAD1D1D2}
+	EndGlobalSection
+EndGlobal
