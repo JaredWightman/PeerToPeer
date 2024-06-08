@@ -20,7 +20,7 @@ def server():
     while True:
 
         received = remote.recv(1024)
-        print(received.decode(), "> ")
+        print(received.decode(), "\n> ")
             
 def client():
     
