@@ -14,12 +14,12 @@ def server():
     serverNode = s.socket(s.AF_INET, s.SOCK_STREAM)
     serverNode.bind((HOST, PORT))
     serverNode.listen()
-
+    remote, remote_address = serverNode.accept()
+    
     while True:
-        remote, remote_address = serverNode.accept()
-        while True:
-            received = remote.recv(1024)
-            print("          ", received.decode())
+
+        received = remote.recv(1024)
+        print(received.decode(), "> ")
             
 def client():
     
@@ -27,7 +27,8 @@ def client():
     clientNode.connect((FOREIGN, PORT))
     
     while True:
-        to_send = input("> ")
+        
+        to_send = input()
         clientNode.sendall(to_send.encode())
 
 
