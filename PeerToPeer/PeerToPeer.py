@@ -5,6 +5,7 @@ import socket as s
 import threading
 
 
+
 HOST = s.gethostbyname(s.gethostname())
 FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
 PORT = 60001
