@@ -33,6 +33,7 @@
 # Future Work
 
 {Make a list of things that you need to fix, improve, and add in the future.}
-* Item 1
+* Create a GUI
+	* Make the textbox in the GUI dynamically save and shift unsent messages so incoming messages don't interrupt typing like in the command prompt
 * Item 2
 * Item 3

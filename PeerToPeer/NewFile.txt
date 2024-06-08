@@ -1,0 +1,1 @@
+This is a test of sending a .txt file through python sockets.
