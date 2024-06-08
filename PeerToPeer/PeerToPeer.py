@@ -16,6 +16,7 @@ def server():
     serverNode.bind((HOST, PORT))
     serverNode.listen()
     remote, remote_address = serverNode.accept()
+    global receiveCheck
     
     while True:
 
@@ -28,6 +29,7 @@ def client():
     
     clientNode = s.socket(s.AF_INET, s.SOCK_STREAM)
     clientNode.connect((FOREIGN, PORT))
+    global receiveCheck
     
     while True:
         while receiveCheck:
