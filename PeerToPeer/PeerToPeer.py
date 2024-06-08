@@ -23,6 +23,7 @@ def server():
         received = remote.recv(1024)
         print(received.decode())
         receiveCheck = False
+        print("Resetting receiveCheck")
         
             
 def client():
@@ -36,6 +37,7 @@ def client():
             to_send = input("> ")
             clientNode.sendall(to_send.encode())
         receiveCheck = True
+        print("Resetting input")
 
 
 serverThread = threading.Thread(target=server)        
