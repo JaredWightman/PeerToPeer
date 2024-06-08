@@ -1,39 +1,40 @@
 # Overview
 
-{Important!  Do not say in this section that this is college assignment.  Talk about what you are trying to accomplish as a software engineer to further your learning.}
+This program is a simple peer-to-peer file sharer. Once the two computers are connected (w/ hardcoded IP's), string messages can be sent back and forth and files can be sent to a predetermined directory. 
 
-{Provide a description the networking program that you wrote. Describe how to use your software.  If you did Client/Server, then you will need to describe how to start both.}
+I made this program to learn more about networking and file storage/manipulation in general. 
 
-{Describe your purpose for writing this software.}
-
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running (you will need to show two pieces of software running and communicating with each other) and a walkthrough of the code.}
 
 [Software Demo Video](http://youtube.link.goes.here)
 
 # Network Communication
 
-{Describe the architecture that you used (client/server or peer-to-peer)}
+This program is a simple Peer-to-Peer network, meaning that both devices running the script are clients and servers and there is no central database/processor.
 
-{Identify if you are using TCP or UDP and what port numbers are used.}
-
-{Identify the format of messages being sent between the client and server or the messages sent between two peers.}
+TCP and port #60001 was used. The scripts allows for simple string messages to be passed back and forth, as well as .txt files, .docx files, .jpg files, and any text file that can be encoded using base64.
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
+This project was made using Visual Studio Community Edition (2022) in Python.
+Libraries used:
+* Socket (IP connections over wireless network)
+* Threading (Parallel processes)
+* Base64 (Encoding data to and from binary)
 
-{Describe the programming language that you used and any libraries.}
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-* [Web Site Name](http://url.link.goes.here)
-* [Web Site Name](http://url.link.goes.here)
+* [File Transfer w/ TCP Socket Python (geeksforgeeks)](https://www.geeksforgeeks.org/file-transfer-using-tcp-socket-in-python/)
+* [P2P Data Exchange (linkedin)](https://www.linkedin.com/pulse/implementing-peer-to-peer-data-exchange-inpython-luis-soares-m-sc-/)
+* [Saving Files from Python (stackoverflow)](https://stackoverflow.com/questions/8024248/telling-python-to-save-a-txt-file-to-a-certain-directory-on-windows-and-mac)
+* [base64 Encoding (stackoverflow)](https://stackoverflow.com/questions/3715493/encoding-an-image-file-with-base64)
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
 * Create a GUI
-	* Make the textbox in the GUI dynamically save and shift unsent messages so incoming messages don't interrupt typing like in the command prompt
-* Item 2
-* Item 3
+	* Make the textbox in the GUI dynamically save and shift unsent messages so incoming messages don't interrupt typing in the command prompt
+* Make program detect file type
+* Make basic antivirus file scanner
+* Make P2P network larger
+* Allow for several small packets to be sent, rather than one large packet which is very network-inefficient
+* Make IP's and directories dynamic and not hard-coded

@@ -1,46 +1,32 @@
 # Jared Wightman
 
-
-from asyncio.windows_events import NULL
 import socket as s
 import threading
 from base64 import b64encode, b64decode
 
 
-
+# Declaring IP's, Port, and device name
 HOST = s.gethostbyname(s.gethostname())
-FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
+FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline() # Hard-coded
 PORT = 60001
 hostName = s.gethostname()
 
-
-# def blart():
-#     fileSource = "C:/Users/JWigh/source/repos/wordTest.docx"
-#     fileName = "wordTest.docx"
-#     file1 = open(fileSource,"rb")
-#     file1data = b64encode(file1.read())
-#     file1.close()
-#     file2 = open("C:/Users/JWigh/source/repos/aliens.docx","wb")
-#     print(file1data)
-#     file2.write(b64decode(file1data))
-#     file2.close()
-
-# blart()
-
+# Function for receiving a file; Receives the name, confirms reception of name, receives file, decodes file, stores file, confirms reception of file.
 def recvFile(remote, serverNode):
     
-    directory = "C:/Users/JWigh/source/repos/"
+    directory = "C:/Users/JWigh/source/repos/" # Hard-coded
     print("Receiving file...")
     fileName = remote.recv(4096).decode()
-    print(fileName) ########
     remote.sendall("r".encode())
     fileData = ""
+    
     while True:
-        fileData = b64decode(remote.recv(4096))# .decode() ## remove decode?
-        print(fileData) ############
+        
+        fileData = b64decode(remote.recv(8388608)) # Max single file size is 8388608 (2^23) bytes or 8k Kb. There should be a way to lower this by using multiple smaller packets.
         if fileData != "":
             break
         print("CHECK")
+        
     print("File: ", fileName)
     file = open((directory + fileName), "wb")
     file.write(fileData)
@@ -48,13 +34,14 @@ def recvFile(remote, serverNode):
     remote.sendall("File received.".encode())
     
 
-
+# Function for sending a file; Getting file name and location, extracting/encoding data, sending name, getting confirmation of name, sending data
 def sendFile(clientNode):
     
     fileName = input("Enter file name below.       (SHORTCUTS: TEXTDOC, WORDDOC, APPLE)\n")
     fileType = ""
 
-    match fileName:
+    match fileName: # Hard-coded
+        
         case "APPLE":
             fileSource = "C:/Users/JWigh/source/repos/apple.jpg"
             fileName = "apple.jpg"
@@ -68,34 +55,35 @@ def sendFile(clientNode):
             fileName = "wordTest.docx"
         
         case _:
-            fileSource = fileName
-            fileName = "file.txt" # default
+            fileSource = input("What is the directory location of the file?\n")
+
     
     try:
-        file = open(fileSource, "rb") ############### "r" to "rb"
-        fileData = b64encode(file.read()) ################################
+        
+        file = open(fileSource, "rb")
+        fileData = b64encode(file.read())
         print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
-        
         clientNode.sendall((fileName).encode())
+        
         while True:
+            
             reception = clientNode.recv(4096).decode()
             if reception == "r":
                 break
             print("check")
-        clientNode.sendall(fileData)#.encode())#####
+            
+        clientNode.sendall(fileData)
         file.close()
         print("File sent!")
-
-
 
 
     except FileNotFoundError:
         print("File could not be opened.")
     except s.error:
         print("File could not be sent.")
-    # except:
-    #     print("An error occurred.")
+    except:
+        print("An error occurred.")
         
 
 
@@ -109,7 +97,7 @@ def server():
     serverNode.listen()
     remote, remote_address = serverNode.accept()
     remoteName = remote.recv(4096).decode()
-    print("CONNECTED TO REMOTE: ", remoteName, "\nCOMMANDS: SENDFILE")
+    print("CONNECTED TO REMOTE: ", remoteName, "\nCOMMANDS: SENDFILE\n")
     
     # Receives data from foreign client
     try:
