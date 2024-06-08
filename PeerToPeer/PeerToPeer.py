@@ -8,7 +8,7 @@ import threading
 HOST = s.gethostbyname(s.gethostname())
 FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
 PORT = 60001
-
+hostName = s.gethostname()
 
 
 def TEMPFILEREADWRITE(): # For reference, delete later
@@ -87,7 +87,7 @@ def server():
     serverNode.bind((HOST, PORT))
     serverNode.listen()
     remote, remote_address = serverNode.accept()
-    remoteName = remote.gethostname()
+    remoteName = remote.recv(4096)
     print("CONNECTED TO REMOTE: ", remoteName, "\n")
     
     # Receives data from foreign client
@@ -103,10 +103,11 @@ def server():
 # Thread to set up as a client and connect to a server. This is the "sending" side of the script.
 def client():
     
-    # Setting up client node, connecting to the foreign computer's server node
+    # Setting up client node, connecting to the foreign computer's server node, telling other computer this one's name
     clientNode = s.socket(s.AF_INET, s.SOCK_STREAM)
     clientNode.connect((FOREIGN, PORT))
-    
+    clientNode.sendall(hostName.encode())
+
     # Sends data to foreign server
     while True:
         
