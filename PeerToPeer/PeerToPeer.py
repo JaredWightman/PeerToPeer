@@ -12,23 +12,12 @@ PORT = 60001
 hostName = s.gethostname()
 
 
-def TEMPFILEREADWRITE(): # For reference, delete later
-    file1 = open("C:/Users/JWigh/source/repos/txtTest.txt", "r")
-    file1data = file1.read()
-    newFileName = "NewFile.txt"
-    file2 = open(newFileName, "w")
-    file2.write(file1data)
-    file2.close()
-
-
 def recvFile(remote):
     
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
-    fileName = remote.recv(4096).decode()
-    print("line 1 ", fileName)
-    fileData = remote.recv(4096).decode()
-    print("line 2")
+    data = remote.recv(4096).decode()
+    fileName, fileData = data.split(" ")
     print("File: ", fileName)
     file = open((directory + fileName), "w")
     print("line 3")
@@ -47,27 +36,27 @@ def sendFile(clientNode):
     match fileName:
         case "APPLE":
             fileSource = "C:/Users/JWigh/source/repos/apple.jpg"
-            fileName = ".jpg"
+            fileName = "apple.jpg"
             
         case "TEXTDOC":
             fileSource = "C:/Users/JWigh/source/repos/txtTest.txt"
-            fileName = "txt"
+            fileName = "txtTest.txt"
             
         case "WORDDOC":
             fileSource = "C:/Users/JWigh/source/repos/wordTest.docx"
-            fileName = ".docx"
+            fileName = "wordTest.docx"
         
         case _:
             fileSource = fileName
-            fileName = ".txt" # default
+            fileName = "file.txt" # default
     
     try:
         file = open(fileSource, "r")
         fileData = file.read()
         print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
-        clientNode.sendall(fileName.encode())
-        clientNode.sendall(fileData.encode())
+        clientNode.sendall((fileName + " " + fileData).encode())
+        # clientNode.sendall(fileData.encode())
         file.close()
         print("File sent!")
         # return clientNode
