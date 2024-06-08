@@ -32,12 +32,13 @@ def recvFile(serverNode):
     file.write(fileData)
     file.close()
     serverNode.sendall("File received.".encode())
+    return serverNode
     
 
 
 def sendFile(clientNode):
     
-    fileName = input("Enter file name below.       (SHORTCUTS: APPLE, TEXTDOC, WORDDOC)\n")
+    fileName = input("Enter file name below.       (SHORTCUTS: TEXTDOC, WORDDOC, APPLE)\n")
     fileType = ""
 
     match fileName:
@@ -66,6 +67,7 @@ def sendFile(clientNode):
         clientNode.sendall(fileData.encode())
         file.close()
         print("File sent!")
+        return clientNode
 
 
 
@@ -91,18 +93,28 @@ def server():
     print("CONNECTED TO REMOTE: ", remoteName, "\n")
     
     # Receives data from foreign client
-    try:
-        while True:
+    # try:
+    while True:
 
-            received = remote.recv(4096).decode()
-            if received == "FILE":
-                recvFile(serverNode)
+        received = remote.recv(4096).decode()
+        if received == "FILE":
+            # recvFile(serverNode)
+            directory = "C:/Users/JWigh/source/repos/"
+            print("Receiving file...")
+            fileName = serverNode.recv(4096).decode()
+            fileData = serverNode.recv(4096).decode()
+            print("File: ", fileName)
+            file = open((directory + fileName), "w")
+            file.write(fileData)
+            file.close()
+            serverNode.sendall("File received.".encode())
+            return serverNode
 
-            else:
-                print(remoteName, ": ", received)
+        else:
+            print(remoteName, ": ", received)
     
-    except:
-        print("\nCONNECTION TERMINATED BY REMOTE.")
+    # except:
+    #    print("\nCONNECTION TERMINATED BY REMOTE.")
         
 # Thread to set up as a client and connect to a server. This is the "sending" side of the script.
 def client():
