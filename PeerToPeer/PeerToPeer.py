@@ -1,6 +1,7 @@
 # Jared Wightman
 
 
+from asyncio.windows_events import NULL
 import socket as s
 import threading
 
@@ -12,17 +13,18 @@ PORT = 60001
 hostName = s.gethostname()
 
 
-def recvFile(remote):
+def recvFile(remote, serverNode):
     
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
-    data = remote.recv(4096).decode()
-    print(data)
-    print(data.split(" "))
-
-    fileData = "YEEEEEE"
-    fileName = "Bob.txt"
-    # fileName, fileData = data.split(" ")
+    fileName = remote.recv(4096).decode()
+    serverNode.sendall("r".encode())
+    fileData = ""
+    while True:
+        fileData = remote.recv(4096).decode()
+        if fileData != "":
+            break
+        print("CHECK")
     print("File: ", fileName)
     file = open((directory + fileName), "w")
     print("line 3")
@@ -60,8 +62,14 @@ def sendFile(clientNode):
         fileData = file.read()
         print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
-        clientNode.sendall((fileName + " " + fileData).encode())
-        # clientNode.sendall(fileData.encode())
+        
+        clientNode.sendall((fileName).encode())
+        while True:
+            reception = clientNode.recv(4096).decode()
+            if reception == "r":
+                break
+            print("check")
+        clientNode.sendall(fileData.encode())
         file.close()
         print("File sent!")
         # return clientNode
@@ -95,7 +103,7 @@ def server():
 
         received = remote.recv(4096).decode()
         if received == "FILE":
-            recvFile(remote)
+            recvFile(remote, serverNode)
 
         else:
             print(remoteName, ": ", received)
