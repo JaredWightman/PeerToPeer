@@ -9,7 +9,7 @@ HOST = s.gethostbyname(s.gethostname())
 FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
 PORT = 60001
 hostName = s.gethostname()
-
+print(hostName)
 
 def TEMPFILEREADWRITE(): # For reference, delete later
     file1 = open("C:/Users/JWigh/source/repos/txtTest.txt", "r")
@@ -24,8 +24,8 @@ def recvFile(serverNode):
     
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
-    fileName = serverNode.recv(4096)
-    fileData = serverNode.recv(4096)
+    fileName = serverNode.recv(4096).decode()
+    fileData = serverNode.recv(4096).decode()
     print("File: ", fileName)
     file = open((directory + fileName), "w")
     file.write(fileData)
@@ -87,18 +87,22 @@ def server():
     serverNode.bind((HOST, PORT))
     serverNode.listen()
     remote, remote_address = serverNode.accept()
-    remoteName = remote.recv(4096)
+    remoteName = remote.recv(4096).decode()
     print("CONNECTED TO REMOTE: ", remoteName, "\n")
     
     # Receives data from foreign client
-    while True:
+    try:
+        while True:
 
-        received = remote.recv(4096)
-        if received == "FILE":
-            recvFile(serverNode)
+            received = remote.recv(4096)
+            if received == "FILE":
+                recvFile(serverNode)
 
-        else:
-            print(remoteName, ": ", received.decode())
+            else:
+                print(remoteName, ": ", received.decode())
+    
+    except:
+        print("\nCONNECTION TERMINATED BY REMOTE.")
         
 # Thread to set up as a client and connect to a server. This is the "sending" side of the script.
 def client():
