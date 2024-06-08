@@ -4,6 +4,7 @@
 from asyncio.windows_events import NULL
 import socket as s
 import threading
+from base64 import b64encode, b64decode
 
 
 
@@ -13,18 +14,18 @@ PORT = 60001
 hostName = s.gethostname()
 
 
-def blart():
-    fileSource = "C:/Users/JWigh/source/repos/wordTest.docx"
-    fileName = "wordTest.docx"
-    file1 = open(fileSource,"rb")
-    file1data = file1.read()
-    file1.close()
-    #file2 = open("C:/Users/JWigh/source/repos/aliens.docx","w")
-    #print(file1data)
-    #file2.write(str(file1data))
-    #file2.close()
+# def blart():
+#     fileSource = "C:/Users/JWigh/source/repos/wordTest.docx"
+#     fileName = "wordTest.docx"
+#     file1 = open(fileSource,"rb")
+#     file1data = b64encode(file1.read())
+#     file1.close()
+#     file2 = open("C:/Users/JWigh/source/repos/aliens.docx","wb")
+#     print(file1data)
+#     file2.write(b64decode(file1data))
+#     file2.close()
 
-blart()
+# blart()
 
 def recvFile(remote, serverNode):
     
@@ -35,13 +36,13 @@ def recvFile(remote, serverNode):
     remote.sendall("r".encode())
     fileData = ""
     while True:
-        fileData = remote.recv(4096).decode() ## remove decode?
+        fileData = b64decode(remote.recv(4096))# .decode() ## remove decode?
         print(fileData) ############
         if fileData != "":
             break
         print("CHECK")
     print("File: ", fileName)
-    file = open((directory + fileName), "w")
+    file = open((directory + fileName), "wb")
     file.write(fileData)
     file.close()
     remote.sendall("File received.".encode())
@@ -72,7 +73,7 @@ def sendFile(clientNode):
     
     try:
         file = open(fileSource, "rb") ############### "r" to "rb"
-        fileData = file.read()
+        fileData = b64encode(file.read()) ################################
         print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
         
