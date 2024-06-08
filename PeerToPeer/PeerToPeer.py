@@ -10,7 +10,7 @@ HOST = s.gethostbyname(s.gethostname())
 FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
 PORT = 60001
 hostName = s.gethostname()
-print(hostName)
+
 
 def TEMPFILEREADWRITE(): # For reference, delete later
     file1 = open("C:/Users/JWigh/source/repos/txtTest.txt", "r")
@@ -37,7 +37,7 @@ def recvFile(serverNode):
 
 def sendFile(clientNode):
     
-    fileName = input("What image would you like to send?")
+    fileName = input("Enter file name below.\n")
     fileType = ""
 
     match fileName:
@@ -58,10 +58,9 @@ def sendFile(clientNode):
             fileName = ".txt" # default
     
     try:
-        print(fileSource) #
         file = open(fileSource, "r")
         fileData = file.read()
-        print("Sending file...")
+        print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
         clientNode.sendall(fileName.encode())
         clientNode.sendall(fileData.encode())
@@ -98,8 +97,10 @@ def server():
             received = remote.recv(4096)
             if received == "FILE":
                 recvFile(serverNode)
+                print("Went through reception process.") ######
 
             else:
+                print("Receiving text:") ########
                 print(remoteName, ": ", received.decode())
     
     except:
