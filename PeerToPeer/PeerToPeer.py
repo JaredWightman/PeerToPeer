@@ -13,15 +13,30 @@ PORT = 60001
 hostName = s.gethostname()
 
 
+def blart():
+    fileSource = "C:/Users/JWigh/source/repos/wordTest.docx"
+    fileName = "wordTest.docx"
+    file1 = open(fileSource,"rb")
+    file1data = file1.read()
+    file1.close()
+    #file2 = open("C:/Users/JWigh/source/repos/aliens.docx","w")
+    #print(file1data)
+    #file2.write(str(file1data))
+    #file2.close()
+
+blart()
+
 def recvFile(remote, serverNode):
     
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
     fileName = remote.recv(4096).decode()
+    print(fileName) ########
     remote.sendall("r".encode())
     fileData = ""
     while True:
         fileData = remote.recv(4096).decode() ## remove decode?
+        print(fileData) ############
         if fileData != "":
             break
         print("CHECK")
@@ -56,7 +71,7 @@ def sendFile(clientNode):
             fileName = "file.txt" # default
     
     try:
-        file = open(fileSource, "r") ############### "r" to "rb"
+        file = open(fileSource, "rb") ############### "r" to "rb"
         fileData = file.read()
         print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
@@ -67,7 +82,7 @@ def sendFile(clientNode):
             if reception == "r":
                 break
             print("check")
-        clientNode.sendall(str(fileData).encode())#####
+        clientNode.sendall(fileData)#.encode())#####
         file.close()
         print("File sent!")
 
@@ -106,7 +121,7 @@ def server():
             else:
                 print(remoteName, ": ", received)
     
-    except:
+    except s.error:
        print("\nCONNECTION TERMINATED BY REMOTE.")
         
 # Thread to set up as a client and connect to a server. This is the "sending" side of the script.
