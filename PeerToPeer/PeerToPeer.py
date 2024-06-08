@@ -5,6 +5,7 @@ import socket as s
 import threading
 
 
+
 HOST = s.gethostbyname(s.gethostname())
 FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
 PORT = 60001
@@ -25,9 +26,12 @@ def recvFile(remote):
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
     fileName = remote.recv(4096).decode()
+    print("line 1")
     fileData = remote.recv(4096).decode()
+    print("line 2")
     print("File: ", fileName)
     file = open((directory + fileName), "w")
+    print("line 3")
     file.write(fileData)
     file.close()
     remote.sendall("File received.".encode())
