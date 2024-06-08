@@ -37,7 +37,7 @@ def recvFile(serverNode):
 
 def sendFile(clientNode):
     
-    fileName = input("Enter file name below.\n")
+    fileName = input("Enter file name below.       (SHORTCUTS: APPLE, TEXTDOC, WORDDOC)\n")
     fileType = ""
 
     match fileName:
@@ -94,14 +94,12 @@ def server():
     try:
         while True:
 
-            received = remote.recv(4096)
+            received = remote.recv(4096).decode()
             if received == "FILE":
                 recvFile(serverNode)
-                print("Went through reception process.") ######
 
             else:
-                print("Receiving text:") ########
-                print(remoteName, ": ", received.decode())
+                print(remoteName, ": ", received)
     
     except:
         print("\nCONNECTION TERMINATED BY REMOTE.")
@@ -122,10 +120,7 @@ def client():
             case "SENDFILE":
                 sendFile(clientNode)
             case "EXIT":
-                print("Exiting...")
-                clientNode.close() # Which one? All three?
-                clientNode.shutdown() # 
-                exit # 
+                raise SystemExit # FIX THIS, MAKES OTHER END GO STUPID MODE
             case _:
                 clientNode.sendall(toSend.encode())
 
