@@ -21,17 +21,15 @@ def recvFile(remote, serverNode):
     remote.sendall("r".encode())
     fileData = ""
     while True:
-        fileData = remote.recv(4096).decode()
+        fileData = remote.recv(4096).decode() ## remove decode?
         if fileData != "":
             break
         print("CHECK")
     print("File: ", fileName)
     file = open((directory + fileName), "w")
-    print("line 3")
     file.write(fileData)
     file.close()
     remote.sendall("File received.".encode())
-    # return remote
     
 
 
@@ -58,7 +56,7 @@ def sendFile(clientNode):
             fileName = "file.txt" # default
     
     try:
-        file = open(fileSource, "r")
+        file = open(fileSource, "r") ############### "r" to "rb"
         fileData = file.read()
         print("Sending file...       (SOURCE: ", fileSource, ")")
         clientNode.sendall("FILE".encode())
@@ -69,10 +67,10 @@ def sendFile(clientNode):
             if reception == "r":
                 break
             print("check")
-        clientNode.sendall(fileData.encode())
+        clientNode.sendall(str(fileData).encode())#####
         file.close()
         print("File sent!")
-        # return clientNode
+
 
 
 
@@ -80,8 +78,8 @@ def sendFile(clientNode):
         print("File could not be opened.")
     except s.error:
         print("File could not be sent.")
-    except:
-        print("An error occurred.")
+    # except:
+    #     print("An error occurred.")
         
 
 
@@ -95,21 +93,21 @@ def server():
     serverNode.listen()
     remote, remote_address = serverNode.accept()
     remoteName = remote.recv(4096).decode()
-    print("CONNECTED TO REMOTE: ", remoteName, "\n")
+    print("CONNECTED TO REMOTE: ", remoteName, "\nCOMMANDS: SENDFILE")
     
     # Receives data from foreign client
-    # try:
-    while True:
+    try:
+        while True:
 
-        received = remote.recv(4096).decode()
-        if received == "FILE":
-            recvFile(remote, serverNode)
+            received = remote.recv(4096).decode()
+            if received == "FILE":
+                recvFile(remote, serverNode)
 
-        else:
-            print(remoteName, ": ", received)
+            else:
+                print(remoteName, ": ", received)
     
-    # except:
-    #    print("\nCONNECTION TERMINATED BY REMOTE.")
+    except:
+       print("\nCONNECTION TERMINATED BY REMOTE.")
         
 # Thread to set up as a client and connect to a server. This is the "sending" side of the script.
 def client():
