@@ -26,7 +26,7 @@ def recvFile(remote):
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
     fileName = remote.recv(4096).decode()
-    print("line 1")
+    print("line 1 ", fileName)
     fileData = remote.recv(4096).decode()
     print("line 2")
     print("File: ", fileName)
