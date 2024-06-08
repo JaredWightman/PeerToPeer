@@ -20,24 +20,24 @@ def TEMPFILEREADWRITE(): # For reference, delete later
     file2.close()
 
 
-def recvFile(serverNode):
+def recvFile(remote):
     
     directory = "C:/Users/JWigh/source/repos/"
     print("Receiving file...")
-    fileName = serverNode.recv(4096).decode()
-    fileData = serverNode.recv(4096).decode()
+    fileName = remote.recv(4096).decode()
+    fileData = remote.recv(4096).decode()
     print("File: ", fileName)
     file = open((directory + fileName), "w")
     file.write(fileData)
     file.close()
-    serverNode.sendall("File received.".encode())
-    return serverNode
+    remote.sendall("File received.".encode())
+    # return remote
     
 
 
 def sendFile(clientNode):
     
-    fileName = input("Enter file name below.       (SHORTCUTS: APPLE, TEXTDOC, WORDDOC)\n")
+    fileName = input("Enter file name below.       (SHORTCUTS: TEXTDOC, WORDDOC, APPLE)\n")
     fileType = ""
 
     match fileName:
@@ -66,7 +66,7 @@ def sendFile(clientNode):
         clientNode.sendall(fileData.encode())
         file.close()
         print("File sent!")
-        return clientNode
+        # return clientNode
 
 
 
@@ -97,7 +97,7 @@ def server():
 
         received = remote.recv(4096).decode()
         if received == "FILE":
-            recvFile(serverNode)
+            recvFile(remote)
 
         else:
             print(remoteName, ": ", received)
