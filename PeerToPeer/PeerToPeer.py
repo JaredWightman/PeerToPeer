@@ -8,6 +8,7 @@ import threading
 HOST = s.gethostbyname(s.gethostname())
 FOREIGN = open("C:/Users/JWigh/source/repos/Local Networking IP.txt", "r").readline()
 PORT = 60001
+receiveCheck = True
 
 def server():
     
@@ -19,7 +20,9 @@ def server():
     while True:
 
         received = remote.recv(1024)
-        print(received.decode(), "\n> ")
+        print(received.decode())
+        receiveCheck = False
+        
             
 def client():
     
@@ -27,9 +30,10 @@ def client():
     clientNode.connect((FOREIGN, PORT))
     
     while True:
-        
-        to_send = input()
-        clientNode.sendall(to_send.encode())
+        while receiveCheck:
+            to_send = input("> ")
+            clientNode.sendall(to_send.encode())
+        receiveCheck = True
 
 
 serverThread = threading.Thread(target=server)        
